@@ -1,6 +1,6 @@
 DELIMITER $
-
 DROP PROCEDURE IF EXISTS dump_orders_calculate_totalPayment;
+
 CREATE PROCEDURE dump_orders_calculate_totalPayment()
 BEGIN
 	UPDATE tb_orders

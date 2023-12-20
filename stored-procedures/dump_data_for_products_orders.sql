@@ -1,4 +1,5 @@
 DELIMITER $
+DROP PROCEDURE IF EXISTS dump_data_for_products_orders;
 
 CREATE PROCEDURE dump_data_for_products_orders()
 BEGIN

@@ -4635,6 +4635,126 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Dumping routines for database 'agro_trade'
+--
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_dump_products` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_dump_products`()
+BEGIN
+	INSERT INTO tb_products (m_desc, m_name, m_price, m_warehouseId)
+    SELECT CONCAT("desc", ( SELECT LEFT(UUID(), 8) )), CONCAT("name", ( SELECT LEFT(UUID(), 8) )), (SELECT RAND()*(10-5)+5), m_id
+    FROM tb_warehouse;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `dump_calculate_production_values` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `dump_calculate_production_values`()
+BEGIN
+	UPDATE tb_productions
+    SET m_totalIncome = (SELECT totalIncome FROM view_dump_calculate_total_income WHERE tb_productions.m_id = view_dump_calculate_total_income.m_productionId)
+    WHERE tb_productions.m_id IN (SELECT m_productionId as m_id FROM view_dump_calculate_total_income);
+    
+    UPDATE tb_productions
+    SET m_totalOutcome = (SELECT totalOutcome FROM view_dump_calculate_total_outcome WHERE tb_productions.m_id = view_dump_calculate_total_outcome.m_productionId)
+    WHERE tb_productions.m_id IN (SELECT m_productionId as m_id FROM view_dump_calculate_total_outcome);
+    
+    UPDATE tb_productions
+    SET m_totalWeight = (SELECT totalWeight FROM view_dump_calculate_total_weight WHERE tb_productions.m_id = view_dump_calculate_total_weight.m_productionId)
+    WHERE tb_productions.m_id IN (SELECT m_productionId as m_id FROM view_dump_calculate_total_weight);
+    
+    UPDATE tb_productions
+    SET m_cleanIncome = (SELECT cleanIncome FROM view_dump_calculate_clean_income WHERE tb_productions.m_id = view_dump_calculate_clean_income.m_id)
+    WHERE tb_productions.m_id IN (SELECT m_id FROM view_dump_calculate_clean_income);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `dump_data_fill_warehouse` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `dump_data_fill_warehouse`()
+BEGIN
+	INSERT INTO tb_warehouse (m_totalValue, m_seedType, m_farmerId)
+    SELECT * FROM view_dump_calculate_farmers_warehouse;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `dump_data_for_products_orders` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `dump_data_for_products_orders`()
+BEGIN
+	INSERT INTO tb_products_orders (m_amount, m_isSold, m_orderId, m_productId)
+    SELECT ( SELECT RAND()*  m_totalValue ), FLOOR( (SELECT RAND()*2) ), m_orderID, m_productID
+    FROM tb_orders CROSS JOIN tb_warehouse INNER JOIN tb_products ON tb_warehouse.m_id = tb_products.m_warehouseId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `dump_orders_calculate_totalPayment` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `dump_orders_calculate_totalPayment`()
+BEGIN
+	UPDATE tb_orders
+    SET m_totalPayment = (SELECT totalPayment FROM view_dump_get_totalPayment WHERE view_dump_get_totalPayment.m_orderId = tb_orders.m_orderID)
+    WHERE tb_orders.m_orderID IN (SELECT m_orderId as m_orderID FROM view_dump_get_totalPayment);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
 -- Current Database: `agro_trade`
 --
 
@@ -4757,4 +4877,4 @@ USE `agro_trade`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-20 15:14:31
+-- Dump completed on 2023-12-20 15:55:55

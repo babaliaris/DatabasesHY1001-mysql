@@ -1,4 +1,5 @@
 DELIMITER $
+DROP PROCEDURE IF EXISTS dump_data_fill_warehouse;
 
 CREATE PROCEDURE dump_data_fill_warehouse()
 BEGIN
