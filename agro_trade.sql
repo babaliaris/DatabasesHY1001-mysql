@@ -299,7 +299,7 @@ CREATE TABLE `tb_incomes` (
   KEY `m_landId` (`m_landId`),
   CONSTRAINT `tb_incomes_ibfk_1` FOREIGN KEY (`m_productionId`) REFERENCES `tb_productions` (`m_id`) ON DELETE CASCADE,
   CONSTRAINT `tb_incomes_ibfk_2` FOREIGN KEY (`m_landId`) REFERENCES `tb_lands` (`m_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -430,7 +430,7 @@ CREATE TABLE `tb_lands` (
   UNIQUE KEY `m_id` (`m_id`),
   KEY `m_farmerId` (`m_farmerId`),
   CONSTRAINT `tb_lands_ibfk_1` FOREIGN KEY (`m_farmerId`) REFERENCES `tb_farmers` (`m_userID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -958,7 +958,7 @@ CREATE TABLE `tb_productions` (
   UNIQUE KEY `m_id` (`m_id`),
   KEY `m_farmerId` (`m_farmerId`),
   CONSTRAINT `m_farmerId` FOREIGN KEY (`m_farmerId`) REFERENCES `tb_farmers` (`m_userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4639,6 +4639,33 @@ SET character_set_client = @saved_cs_client;
 --
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_buyer` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_buyer`(
+IN namee CHAR(40),
+IN surname CHAR(40),
+IN street TEXT,
+IN city CHAR(40),
+IN zip CHAR(10)
+)
+BEGIN
+	INSERT
+    INTO tb_buyers (m_name, m_surname, m_stree, m_city, m_zip)
+	VALUES (namee, surname, street, city, zip);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `add_dump_products` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -4652,6 +4679,137 @@ BEGIN
 	INSERT INTO tb_products (m_desc, m_name, m_price, m_warehouseId)
     SELECT CONCAT("desc", ( SELECT LEFT(UUID(), 8) )), CONCAT("name", ( SELECT LEFT(UUID(), 8) )), (SELECT RAND()*(10-5)+5), m_id
     FROM tb_warehouse;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_farmer` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_farmer`(
+IN namee CHAR(40),
+IN surname CHAR(40),
+IN street TEXT,
+IN city CHAR(40),
+IN zip CHAR(10)
+)
+BEGIN
+	INSERT
+    INTO tb_farmers (m_name, m_surname, m_stree, m_city, m_zip)
+	VALUES (namee, surname, street, city, zip);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_income` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`farmer`@`localhost` PROCEDURE `add_income`(
+IN farmerId BIGINT, -- Is guranteed to be the users actual id. Backend should retrieve it from a token hash.
+IN name_ CHAR(40),
+IN value_ REAL,
+IN valueType ENUM ('CURRENCY','WEIGHT','VOLUME'),
+IN productionId BIGINT,
+IN landId BIGINT
+)
+BEGIN
+	DECLARE check_productionId, check_landId BIGINT ;
+    DECLARE err_msg TEXT;
+
+    SET check_productionId = 0, check_landId = 0;
+    
+	SELECT tb_productions.m_id INTO check_productionId 
+    FROM tb_farmers INNER JOIN tb_productions ON tb_farmers.m_userID = tb_productions.m_farmerId
+    WHERE m_userID = farmerId AND tb_productions.m_id = productionId;
+    
+    SELECT tb_lands.m_id INTO check_landId 
+    FROM tb_farmers INNER JOIN tb_lands ON tb_farmers.m_userID = tb_lands.m_farmerId
+    WHERE m_userID = farmerId AND tb_lands.m_id = landId;
+    
+    SET err_msg = concat("productionId=", productionId, " does not belong to farmerId=", farmerId);
+    IF check_productionId = 0 THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = err_msg;
+	END IF;
+    
+    SET err_msg = concat("landId=", landId, " does not belong to farmerId=", farmerId);
+    IF check_landId = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = err_msg;
+	END IF;
+    
+    
+	INSERT
+    INTO tb_incomes (m_name, m_value, m_valueType, m_productionId, m_landId)
+	VALUES (name_, value_, valueType, productionId, landId);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_land` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`farmer`@`localhost` PROCEDURE `add_land`(
+IN name_ CHAR(40),
+IN latitude REAL,
+IN longitude REAL,
+IN seedType ENUM('OLIVES','WHEAT','PEACHES','TOMATOES', 'CUCUMBERS', 'NUTS', 'CABBAGES', 'OTHER'),
+IN farmerId BIGINT -- Is guranteed to be the users actual id. Backend should retrieve it from a token hash.
+)
+BEGIN
+	INSERT
+    INTO tb_lands (m_name, m_latitude, m_longitude, m_seedType, m_farmerId)
+	VALUES (name_, latitude, longitude, seedType, farmerId);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_production` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`farmer`@`localhost` PROCEDURE `add_production`(
+IN name_ CHAR(40),
+IN year_ INT,
+IN farmerId BIGINT -- Is guranteed to be the users actual id. Backend should retrieve it from a token hash.
+)
+BEGIN
+	INSERT
+    INTO tb_productions (m_name, m_year, m_farmerId)
+	VALUES (name_, year_, farmerId);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4772,7 +4930,7 @@ USE `agro_trade`;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`babaliaris`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `view_dump_calculate_clean_income` AS select `tb_productions`.`m_totalIncome` - `tb_productions`.`m_totalOutcome` AS `cleanIncome`,`tb_productions`.`m_id` AS `m_id` from `tb_productions` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -4790,7 +4948,7 @@ USE `agro_trade`;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`babaliaris`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `view_dump_calculate_farmers_warehouse` AS select sum(`inc`.`m_value`) AS `sum(m_value)`,`ld`.`m_seedType` AS `m_seedType`,`ld`.`m_farmerId` AS `m_farmerId` from ((`tb_farmers` `fr` join `tb_lands` `ld` on(`ld`.`m_farmerId` = `fr`.`m_userID`)) join `tb_incomes` `inc` on(`inc`.`m_landId` = `ld`.`m_id`)) where `inc`.`m_valueType` = 'WEIGHT' group by `ld`.`m_farmerId` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -4808,7 +4966,7 @@ USE `agro_trade`;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`babaliaris`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `view_dump_calculate_total_income` AS select sum(`tb_incomes`.`m_value`) AS `totalIncome`,`tb_incomes`.`m_productionId` AS `m_productionId` from (`tb_productions` join `tb_incomes` on(`tb_productions`.`m_id` = `tb_incomes`.`m_productionId`)) where `tb_incomes`.`m_valueType` = 'CURRENCY' group by `tb_productions`.`m_id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -4826,7 +4984,7 @@ USE `agro_trade`;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`babaliaris`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `view_dump_calculate_total_outcome` AS select sum(`tb_outcomes`.`m_value`) AS `totalOutcome`,`tb_outcomes`.`m_productionId` AS `m_productionId` from (`tb_productions` join `tb_outcomes` on(`tb_productions`.`m_id` = `tb_outcomes`.`m_productionId`)) where `tb_outcomes`.`m_valueType` = 'CURRENCY' group by `tb_productions`.`m_id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -4862,7 +5020,7 @@ USE `agro_trade`;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`babaliaris`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `view_dump_get_totalPayment` AS select sum(`tb_products`.`m_price` * `tb_products_orders`.`m_amount`) AS `totalPayment`,`tb_products_orders`.`m_orderId` AS `m_orderId` from (`tb_products_orders` join `tb_products` on(`tb_products_orders`.`m_productId` = `tb_products`.`m_productID`)) group by `tb_products_orders`.`m_orderId` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -4877,4 +5035,4 @@ USE `agro_trade`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-20 15:55:55
+-- Dump completed on 2023-12-21 22:02:12
