@@ -3,7 +3,7 @@ USE agro_trade;
 DROP PROCEDURE IF EXISTS add_land;
 
 DELIMITER $
-CREATE DEFINER='farmer'@'localhost' PROCEDURE add_land(
+CREATE DEFINER='agro_farmer'@'localhost' PROCEDURE add_land(
 IN name_ CHAR(40),
 IN latitude REAL,
 IN longitude REAL,

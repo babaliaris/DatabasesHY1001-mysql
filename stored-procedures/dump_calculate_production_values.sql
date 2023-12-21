@@ -3,7 +3,7 @@ use agro_trade;
 DROP PROCEDURE IF EXISTS dump_calculate_production_values;
 DELIMITER $
 
-CREATE DEFINER='root'@'localhost' PROCEDURE dump_calculate_production_values()
+CREATE DEFINER='agro_admin'@'localhost' PROCEDURE dump_calculate_production_values()
 BEGIN
 	UPDATE tb_productions
     SET m_totalIncome = (SELECT totalIncome FROM view_dump_calculate_total_income WHERE tb_productions.m_id = view_dump_calculate_total_income.m_productionId)

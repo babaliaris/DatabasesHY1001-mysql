@@ -2,7 +2,7 @@ use agro_trade;
 
 DROP VIEW IF EXISTS view_dump_calculate_farmers_warehouse;
 
-CREATE DEFINER='root'@'localhost' VIEW view_dump_calculate_farmers_warehouse as
+CREATE DEFINER='agro_admin'@'localhost' VIEW view_dump_calculate_farmers_warehouse as
 	SELECT sum(m_value), m_seedType, m_farmerId
 	FROM tb_farmers as fr
 		INNER JOIN tb_lands as ld on ld.m_farmerId = fr.m_userID

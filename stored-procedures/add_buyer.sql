@@ -3,7 +3,7 @@ USE agro_trade;
 DROP PROCEDURE IF EXISTS add_buyer;
 
 DELIMITER $
-CREATE DEFINER='root'@'localhost' PROCEDURE add_buyer(
+CREATE DEFINER='agro_admin'@'localhost' PROCEDURE add_buyer(
 IN namee CHAR(40),
 IN surname CHAR(40),
 IN street TEXT,

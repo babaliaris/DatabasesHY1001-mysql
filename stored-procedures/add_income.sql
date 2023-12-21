@@ -3,7 +3,7 @@ USE agro_trade;
 DROP PROCEDURE IF EXISTS add_income;
 
 DELIMITER $
-CREATE DEFINER='farmer'@'localhost' PROCEDURE add_income(
+CREATE DEFINER='agro_farmer'@'localhost' PROCEDURE add_income(
 IN farmerId BIGINT, -- Is guranteed to be the users actual id. Backend should retrieve it from a token hash.
 IN name_ CHAR(40),
 IN value_ REAL,
