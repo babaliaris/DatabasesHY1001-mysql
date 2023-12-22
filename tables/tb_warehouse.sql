@@ -10,5 +10,6 @@ CREATE TABLE tb_warehouse
     m_farmerId BIGINT NOT NULL,
     
     FOREIGN KEY (m_farmerId) REFERENCES tb_farmers (m_userID) ON DELETE CASCADE,
-    PRIMARY KEY (m_id, m_farmerId)
+    PRIMARY KEY (m_id, m_farmerId),
+    UNIQUE m_farmerId_m_seedType (m_farmerId, m_seedType)
 );

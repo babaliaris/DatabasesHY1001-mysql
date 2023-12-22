@@ -4,18 +4,6 @@ use agro_trade;
 # TABLE STRUCTURE FOR: tb_buyers
 #
 
-DROP TABLE IF EXISTS `tb_buyers`;
-
-CREATE TABLE `tb_buyers` (
-  `m_userID` bigint(20) NOT NULL,
-  `m_name` char(40) NOT NULL CHECK (char_length(`m_name`) <= 40),
-  `m_surname` char(40) NOT NULL CHECK (char_length(`m_surname`) <= 40),
-  `m_street` text DEFAULT NULL CHECK (char_length(`m_street`) <= 65535),
-  `m_city` char(40) DEFAULT NULL CHECK (char_length(`m_city`) <= 40),
-  `m_zip` char(10) DEFAULT NULL CHECK (char_length(`m_zip`) <= 40),
-  PRIMARY KEY (`m_userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 INSERT INTO `tb_buyers` (`m_userID`, `m_name`, `m_surname`, `m_street`, `m_city`, `m_zip`) VALUES ('0', 'Nellie', 'Wiegand', 'Fritsch Alley', 'Ahmedbury', '09793-5307');
 INSERT INTO `tb_buyers` (`m_userID`, `m_name`, `m_surname`, `m_street`, `m_city`, `m_zip`) VALUES ('1', 'Earnestine', 'Jerde', 'Kozey Forest', 'Lake Augustinebury', '82111');
 INSERT INTO `tb_buyers` (`m_userID`, `m_name`, `m_surname`, `m_street`, `m_city`, `m_zip`) VALUES ('2', 'Hope', 'Morar', 'Stanton Radial', 'South Keagan', '30140');
@@ -118,21 +106,7 @@ INSERT INTO `tb_buyers` (`m_userID`, `m_name`, `m_surname`, `m_street`, `m_city`
 INSERT INTO `tb_buyers` (`m_userID`, `m_name`, `m_surname`, `m_street`, `m_city`, `m_zip`) VALUES ('961654766', 'Maude', 'Walsh', 'Rohan Mission', 'Marvinmouth', '00342-1584');
 
 
-#
-# TABLE STRUCTURE FOR: tb_farmers
-#
 
-DROP TABLE IF EXISTS `tb_farmers`;
-
-CREATE TABLE `tb_farmers` (
-  `m_userID` bigint(20) NOT NULL,
-  `m_name` char(40) NOT NULL CHECK (char_length(`m_name`) <= 40),
-  `m_surname` char(40) NOT NULL CHECK (char_length(`m_surname`) <= 40),
-  `m_street` text DEFAULT NULL CHECK (char_length(`m_street`) <= 65535),
-  `m_city` char(40) DEFAULT NULL CHECK (char_length(`m_city`) <= 40),
-  `m_zip` char(10) DEFAULT NULL CHECK (char_length(`m_zip`) <= 40),
-  PRIMARY KEY (`m_userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `tb_farmers` (`m_userID`, `m_name`, `m_surname`, `m_street`, `m_city`, `m_zip`) VALUES ('0', 'Melvin', 'Sipes', '77350 Jennings Branch Suite 502', 'South Princeborough', '37995-7084');
 INSERT INTO `tb_farmers` (`m_userID`, `m_name`, `m_surname`, `m_street`, `m_city`, `m_zip`) VALUES ('1', 'Tony', 'Moore', '5220 Flavio Station', 'Jeniferfort', '89244');
@@ -239,41 +213,6 @@ INSERT INTO `tb_farmers` (`m_userID`, `m_name`, `m_surname`, `m_street`, `m_city
 #
 # TABLE STRUCTURE FOR: tb_warehouse
 #
-
-DROP TABLE IF EXISTS `tb_warehouse`;
-
-CREATE TABLE `tb_warehouse` (
-  `m_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `m_totalValue` double NOT NULL DEFAULT 0,
-  `m_seedType` enum('OLIVES','WHEAT','PEACHES','TOMATOES','CUCUMBERS','NUTS','CABBAGES','OTHER') DEFAULT NULL,
-  `m_farmerId` bigint(20) NOT NULL,
-  PRIMARY KEY (`m_id`,`m_farmerId`),
-  UNIQUE KEY `m_id` (`m_id`),
-  KEY `m_farmerId` (`m_farmerId`),
-  CONSTRAINT `tb_warehouse_ibfk_1` FOREIGN KEY (`m_farmerId`) REFERENCES `tb_farmers` (`m_userID`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-#
-# TABLE STRUCTURE FOR: tb_productions
-#
-
-DROP TABLE IF EXISTS `tb_productions`;
-
-CREATE TABLE `tb_productions` (
-  `m_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `m_name` char(40) NOT NULL CHECK (char_length(`m_name`) <= 40),
-  `m_year` int(11) NOT NULL,
-  `m_totalIncome` double NOT NULL DEFAULT 0,
-  `m_totalOutcome` double NOT NULL DEFAULT 0,
-  `m_cleanIncome` double NOT NULL DEFAULT 0,
-  `m_totalWeight` double NOT NULL DEFAULT 0,
-  `m_farmerId` bigint(20) NOT NULL,
-  PRIMARY KEY (`m_id`,`m_farmerId`),
-  UNIQUE KEY `m_id` (`m_id`),
-  KEY `m_farmerId` (`m_farmerId`),
-  CONSTRAINT `m_farmerId` FOREIGN KEY (`m_farmerId`) REFERENCES `tb_farmers` (`m_userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `tb_productions` (`m_id`, `m_name`, `m_year`, `m_totalIncome`, `m_totalOutcome`, `m_cleanIncome`, `m_totalWeight`, `m_farmerId`) VALUES ('1', 'Howe, Treutel and Kohler', 1989, '0', '0', '0', '0', '0');
 INSERT INTO `tb_productions` (`m_id`, `m_name`, `m_year`, `m_totalIncome`, `m_totalOutcome`, `m_cleanIncome`, `m_totalWeight`, `m_farmerId`) VALUES ('2', 'Pagac PLC', 2010, '0', '0', '0', '0', '1');
@@ -382,21 +321,6 @@ INSERT INTO `tb_productions` (`m_id`, `m_name`, `m_year`, `m_totalIncome`, `m_to
 # TABLE STRUCTURE FOR: tb_lands
 #
 
-DROP TABLE IF EXISTS `tb_lands`;
-
-CREATE TABLE `tb_lands` (
-  `m_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `m_name` char(40) NOT NULL CHECK (char_length(`m_name`) <= 40),
-  `m_latitude` double DEFAULT 0,
-  `m_longitude` double DEFAULT 0,
-  `m_seedType` enum('OLIVES','WHEAT','PEACHES','TOMATOES','CUCUMBERS','NUTS','CABBAGES','OTHER') DEFAULT NULL,
-  `m_farmerId` bigint(20) NOT NULL,
-  PRIMARY KEY (`m_id`,`m_farmerId`),
-  UNIQUE KEY `m_id` (`m_id`),
-  KEY `m_farmerId` (`m_farmerId`),
-  CONSTRAINT `tb_lands_ibfk_1` FOREIGN KEY (`m_farmerId`) REFERENCES `tb_farmers` (`m_userID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 INSERT INTO `tb_lands` (`m_id`, `m_name`, `m_latitude`, `m_longitude`, `m_seedType`, `m_farmerId`) VALUES ('1', 'North', '33.4894', '33625.357', 'WHEAT', '0');
 INSERT INTO `tb_lands` (`m_id`, `m_name`, `m_latitude`, `m_longitude`, `m_seedType`, `m_farmerId`) VALUES ('2', 'New', '2685828.914', '1247.15440722', 'NUTS', '1');
 INSERT INTO `tb_lands` (`m_id`, `m_name`, `m_latitude`, `m_longitude`, `m_seedType`, `m_farmerId`) VALUES ('3', 'West', '1333119.56', '0', 'PEACHES', '2');
@@ -503,23 +427,6 @@ INSERT INTO `tb_lands` (`m_id`, `m_name`, `m_latitude`, `m_longitude`, `m_seedTy
 # TABLE STRUCTURE FOR: tb_incomes
 #
 
-DROP TABLE IF EXISTS `tb_incomes`;
-
-CREATE TABLE `tb_incomes` (
-  `m_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `m_name` char(40) NOT NULL CHECK (char_length(`m_name`) <= 40),
-  `m_value` double DEFAULT 0,
-  `m_valueType` enum('CURRENCY','WEIGHT','VOLUME') DEFAULT NULL,
-  `m_productionId` bigint(20) NOT NULL,
-  `m_landId` bigint(20) NOT NULL,
-  PRIMARY KEY (`m_id`,`m_productionId`),
-  UNIQUE KEY `m_id` (`m_id`),
-  KEY `m_productionId` (`m_productionId`),
-  KEY `m_landId` (`m_landId`),
-  CONSTRAINT `tb_incomes_ibfk_1` FOREIGN KEY (`m_productionId`) REFERENCES `tb_productions` (`m_id`) ON DELETE CASCADE,
-  CONSTRAINT `tb_incomes_ibfk_2` FOREIGN KEY (`m_landId`) REFERENCES `tb_lands` (`m_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 INSERT INTO `tb_incomes` (`m_id`, `m_name`, `m_value`, `m_valueType`, `m_productionId`, `m_landId`) VALUES ('1', 'Right-sized non-volatile archive', '4194769', 'VOLUME', '1', '1');
 INSERT INTO `tb_incomes` (`m_id`, `m_name`, `m_value`, `m_valueType`, `m_productionId`, `m_landId`) VALUES ('2', 'Proactive discrete orchestration', '5345434.49', 'WEIGHT', '2', '2');
 INSERT INTO `tb_incomes` (`m_id`, `m_name`, `m_value`, `m_valueType`, `m_productionId`, `m_landId`) VALUES ('3', 'Team-oriented needs-based throughput', '19.39813', 'VOLUME', '3', '3');
@@ -624,23 +531,6 @@ INSERT INTO `tb_incomes` (`m_id`, `m_name`, `m_value`, `m_valueType`, `m_product
 #
 # TABLE STRUCTURE FOR: tb_outcomes
 #
-
-DROP TABLE IF EXISTS `tb_outcomes`;
-
-CREATE TABLE `tb_outcomes` (
-  `m_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `m_name` char(40) NOT NULL CHECK (char_length(`m_name`) <= 40),
-  `m_value` double DEFAULT 0,
-  `m_valueType` enum('CURRENCY','WEIGHT','VOLUME') DEFAULT NULL,
-  `m_productionId` bigint(20) NOT NULL,
-  `m_landId` bigint(20) NOT NULL,
-  PRIMARY KEY (`m_id`,`m_productionId`),
-  UNIQUE KEY `m_id` (`m_id`),
-  KEY `m_productionId` (`m_productionId`),
-  KEY `m_landId` (`m_landId`),
-  CONSTRAINT `tb_outcomes_ibfk_1` FOREIGN KEY (`m_productionId`) REFERENCES `tb_productions` (`m_id`) ON DELETE CASCADE,
-  CONSTRAINT `tb_outcomes_ibfk_2` FOREIGN KEY (`m_landId`) REFERENCES `tb_lands` (`m_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `tb_outcomes` (`m_id`, `m_name`, `m_value`, `m_valueType`, `m_productionId`, `m_landId`) VALUES ('1', 'Synchronised well-modulated toolset', '4.275658', 'VOLUME', '1', '1');
 INSERT INTO `tb_outcomes` (`m_id`, `m_name`, `m_value`, `m_valueType`, `m_productionId`, `m_landId`) VALUES ('2', 'Persistent maximized application', '0', 'VOLUME', '2', '2');
@@ -748,21 +638,6 @@ INSERT INTO `tb_outcomes` (`m_id`, `m_name`, `m_value`, `m_valueType`, `m_produc
 # TABLE STRUCTURE FOR: tb_maintenance
 #
 
-DROP TABLE IF EXISTS `tb_maintenance`;
-
-CREATE TABLE `tb_maintenance` (
-  `m_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `m_name` char(40) NOT NULL CHECK (char_length(`m_name`) <= 40),
-  `m_description` text DEFAULT NULL,
-  `m_totalCost` double NOT NULL DEFAULT 0,
-  `m_date` datetime DEFAULT NULL,
-  `m_productionId` bigint(20) NOT NULL,
-  PRIMARY KEY (`m_id`,`m_productionId`),
-  UNIQUE KEY `m_id` (`m_id`),
-  KEY `m_productionId` (`m_productionId`),
-  CONSTRAINT `tb_maintenance_ibfk_1` FOREIGN KEY (`m_productionId`) REFERENCES `tb_productions` (`m_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 INSERT INTO `tb_maintenance` (`m_id`, `m_name`, `m_description`, `m_totalCost`, `m_date`, `m_productionId`) VALUES ('1', 'Voluptas repellat eius saepe magni esse', 'Omnis tempora nihil aut officiis quis a. Atque ut ad tempore molestiae. Enim laboriosam sit praesentium aut.', '1049.813341', '2010-11-17 14:45:05', '1');
 INSERT INTO `tb_maintenance` (`m_id`, `m_name`, `m_description`, `m_totalCost`, `m_date`, `m_productionId`) VALUES ('2', 'Dolorem quis velit et.', 'Maiores veniam sapiente exercitationem ut. Nihil nam quod et est autem.', '1.69599907', '1972-04-26 08:29:34', '2');
 INSERT INTO `tb_maintenance` (`m_id`, `m_name`, `m_description`, `m_totalCost`, `m_date`, `m_productionId`) VALUES ('3', 'Quam suscipit ut et.', 'Laudantium dicta qui aut laborum recusandae. Necessitatibus deleniti quod deserunt atque temporibus odit impedit. Maiores ut est omnis expedita amet rerum sit aut.', '3.3', '2018-12-29 15:59:25', '3');
@@ -869,21 +744,6 @@ INSERT INTO `tb_maintenance` (`m_id`, `m_name`, `m_description`, `m_totalCost`, 
 # TABLE STRUCTURE FOR: tb_orders
 #
 
-DROP TABLE IF EXISTS `tb_orders`;
-
-CREATE TABLE `tb_orders` (
-  `m_orderID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `m_totalPayment` double NOT NULL DEFAULT 0,
-  `m_submitDate` datetime DEFAULT current_timestamp(),
-  `m_receivedDate` datetime DEFAULT NULL,
-  `m_hasCancelled` tinyint(1) DEFAULT 0,
-  `m_hasCompleted` tinyint(1) DEFAULT 0,
-  `m_buyerId` bigint(20) NOT NULL,
-  PRIMARY KEY (`m_orderID`),
-  KEY `m_buyerId` (`m_buyerId`),
-  CONSTRAINT `tb_orders_ibfk_1` FOREIGN KEY (`m_buyerId`) REFERENCES `tb_buyers` (`m_userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 INSERT INTO `tb_orders` (`m_orderID`, `m_totalPayment`, `m_submitDate`, `m_receivedDate`, `m_hasCancelled`, `m_hasCompleted`, `m_buyerId`) VALUES ('1', '0', '1974-10-28 11:25:24', '1992-12-15 06:12:00', 0, 0, '0');
 INSERT INTO `tb_orders` (`m_orderID`, `m_totalPayment`, `m_submitDate`, `m_receivedDate`, `m_hasCancelled`, `m_hasCompleted`, `m_buyerId`) VALUES ('2', '0', '1981-05-01 08:04:48', '2008-09-23 01:13:19', 1, 0, '1');
 INSERT INTO `tb_orders` (`m_orderID`, `m_totalPayment`, `m_submitDate`, `m_receivedDate`, `m_hasCancelled`, `m_hasCompleted`, `m_buyerId`) VALUES ('3', '0', '2005-12-14 19:11:56', '1986-07-14 20:05:45', 0, 1, '2');
@@ -986,60 +846,6 @@ INSERT INTO `tb_orders` (`m_orderID`, `m_totalPayment`, `m_submitDate`, `m_recei
 INSERT INTO `tb_orders` (`m_orderID`, `m_totalPayment`, `m_submitDate`, `m_receivedDate`, `m_hasCancelled`, `m_hasCompleted`, `m_buyerId`) VALUES ('100', '0', '2016-09-21 23:45:53', '1986-12-22 06:41:42', 0, 0, '961654766');
 
 
-#
-# TABLE STRUCTURE FOR: tb_products
-#
-
-DROP TABLE IF EXISTS `tb_products`;
-
-CREATE TABLE `tb_products` (
-  `m_productID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `m_desc` text DEFAULT NULL,
-  `m_name` char(40) NOT NULL CHECK (char_length(`m_name`) <= 40),
-  `m_price` double NOT NULL,
-  `m_warehouseId` bigint(20) NOT NULL,
-  PRIMARY KEY (`m_productID`),
-  KEY `m_warehouseId` (`m_warehouseId`),
-  CONSTRAINT `tb_products_ibfk_1` FOREIGN KEY (`m_warehouseId`) REFERENCES `tb_warehouse` (`m_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-#
-# TABLE STRUCTURE FOR: tb_products_orders
-#
-
-DROP TABLE IF EXISTS `tb_products_orders`;
-
-CREATE TABLE `tb_products_orders` (
-  `m_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `m_amount` double NOT NULL,
-  `m_isSold` tinyint(1) NOT NULL DEFAULT 0,
-  `m_orderId` bigint(20) NOT NULL,
-  `m_productId` bigint(20) NOT NULL,
-  PRIMARY KEY (`m_id`),
-  KEY `m_orderId` (`m_orderId`),
-  KEY `m_productId` (`m_productId`),
-  CONSTRAINT `tb_products_orders_ibfk_1` FOREIGN KEY (`m_orderId`) REFERENCES `tb_orders` (`m_orderID`) ON DELETE CASCADE,
-  CONSTRAINT `tb_products_orders_ibfk_2` FOREIGN KEY (`m_productId`) REFERENCES `tb_products` (`m_productID`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-#
-# TABLE STRUCTURE FOR: tb_tools
-#
-
-DROP TABLE IF EXISTS `tb_tools`;
-
-CREATE TABLE `tb_tools` (
-  `m_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `m_name` char(40) NOT NULL CHECK (char_length(`m_name`) <= 40),
-  `m_type` enum('VEHICLE','TRACTOR_EQUIPMENT','OTHER') DEFAULT NULL,
-  `m_boughtCost` double NOT NULL DEFAULT 0,
-  `m_boughtDate` datetime DEFAULT NULL,
-  `m_farmerId` bigint(20) NOT NULL,
-  PRIMARY KEY (`m_id`,`m_farmerId`),
-  UNIQUE KEY `m_id` (`m_id`),
-  KEY `m_farmerId` (`m_farmerId`),
-  CONSTRAINT `tb_tools_ibfk_1` FOREIGN KEY (`m_farmerId`) REFERENCES `tb_farmers` (`m_userID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `tb_tools` (`m_id`, `m_name`, `m_type`, `m_boughtCost`, `m_boughtDate`, `m_farmerId`) VALUES ('1', 'omnis', 'OTHER', '45739.42991', '1986-03-29 19:35:11', '0');
 INSERT INTO `tb_tools` (`m_id`, `m_name`, `m_type`, `m_boughtCost`, `m_boughtDate`, `m_farmerId`) VALUES ('2', 'dignissimos', 'OTHER', '0.53', '1976-12-08 10:02:33', '1');
@@ -1141,3 +947,9 @@ INSERT INTO `tb_tools` (`m_id`, `m_name`, `m_type`, `m_boughtCost`, `m_boughtDat
 INSERT INTO `tb_tools` (`m_id`, `m_name`, `m_type`, `m_boughtCost`, `m_boughtDate`, `m_farmerId`) VALUES ('98', 'reiciendis', 'OTHER', '73929539.108612', '1999-04-03 12:02:02', '849915588');
 INSERT INTO `tb_tools` (`m_id`, `m_name`, `m_type`, `m_boughtCost`, `m_boughtDate`, `m_farmerId`) VALUES ('99', 'sunt', 'OTHER', '0', '1974-11-19 16:18:41', '888173027');
 INSERT INTO `tb_tools` (`m_id`, `m_name`, `m_type`, `m_boughtCost`, `m_boughtDate`, `m_farmerId`) VALUES ('100', 'quas', 'VEHICLE', '71921', '1993-10-15 15:36:53', '915450276');
+
+call dump_calculate_production_values();
+call dump_data_fill_warehouse();
+call add_dump_products();
+call dump_data_for_products_orders();
+call dump_orders_calculate_totalPayment();
